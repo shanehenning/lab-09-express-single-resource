@@ -17,10 +17,12 @@ pokeRouter.use(bodyParser.json());
 let jsonParser = bodyParser.json();
 
 pokeRouter.get('/pokemon/:id', (req, res) => {
-  let pokemon = all[req.params.id];
-  if (pokemon) {
-    return res.send(JSON.stringify(pokemon) + '\r\n');
+  console.log(req.params.id);
+  let pokemon = req.params.id;
+  if (!all[pokemon]) {
+    return res.send(404, 'Pokemon not found! \r\n');
   }
+  return res.send(JSON.stringify(all[pokemon]) + '\r\n');
 });
 
 pokeRouter.post('/pokemon/', jsonParser, (req, res) => {

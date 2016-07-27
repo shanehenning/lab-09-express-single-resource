@@ -24,44 +24,44 @@ pokeRouter.get('/', (req, res) => {
 });
 
 pokeRouter.get('/pokemon/', (req, res) => {
-  return res.status(400).send(JSON.stringify(AppError.error400('No id inputted.')));
+  return res.status(400).send(JSON.stringify(AppError.error400('No name inputted.')));
 });
 
-pokeRouter.get('/pokemon/:id', (req, res) => {
-  if (!all[req.params.id]) {
+pokeRouter.get('/pokemon/:name', (req, res) => {
+  if (!all[req.params.name]) {
     return res.status(404).send(JSON.stringify(AppError.error404('Pokemon not found!')) + '\r\n');
   }
-  return res.status(200).send(JSON.stringify(all[req.params.id]) + '\r\n');
+  return res.status(200).send(JSON.stringify(all[req.params.name]) + '\r\n');
 });
 
-pokeRouter.post('/pokemon/:id', jsonParser, (req, res) => {
+pokeRouter.post('/pokemon/:name', jsonParser, (req, res) => {
   if (!req.body.name) {
-    return res.status(400).send(JSON.stringify(AppError.error400('No data inputted for pokemon ' + req.params.id + '.')) + '\r\n');
+    return res.status(400).send(JSON.stringify(AppError.error400('No data inputted for pokemon ' + req.params.name + '.')) + '\r\n');
   }
   let poke = new Constructor(req.body);
-  all[req.params.id] = poke;
-  return res.status(200).send('Pokemon ' + req.params.id + ' added: ' + JSON.stringify(poke) + '\r\n');
+  all[req.params.name] = poke;
+  return res.status(200).send('Pokemon ' + req.params.name + ' added: ' + JSON.stringify(poke) + '\r\n');
 });
 
-pokeRouter.put('/pokemon/:id', jsonParser, (req, res) => {
+pokeRouter.put('/pokemon/:name', jsonParser, (req, res) => {
   if (!req.body.name) {
-    return res.status(400).send(JSON.stringify(AppError.error400('No data inputted for pokemon ' + req.params.id + '.')) + '\r\n');
+    return res.status(400).send(JSON.stringify(AppError.error400('No data inputted for pokemon ' + req.params.name + '.')) + '\r\n');
   }
-  else if (!all[req.params.id]) {
+  else if (!all[req.params.name]) {
     return res.status(404).send(JSON.stringify(AppError.error404('Pokemon does not yet exist on server.')) + '\r\n');
   }
-  all[req.params.id] = {
+  all[req.params.name] = {
     'name': req.body.name,
     'type': req.body.type,
     'final evolution': req.body['final evolution']
   };
-  return res.status(200).send('Pokemon ' + req.params.id + ' updated: ' + JSON.stringify(all[req.params.id]) + '\r\n');
+  return res.status(200).send('Pokemon ' + req.params.name + ' updated: ' + JSON.stringify(all[req.params.name]) + '\r\n');
 });
 
-pokeRouter.delete('/pokemon/:id', (req, res) => {
-  if(!all[req.params.id]){
+pokeRouter.delete('/pokemon/:name', (req, res) => {
+  if(!all[req.params.name]){
     return res.status(404).send(JSON.stringify(AppError.error404('Pokemon does not yet exist on server.')) + '\r\n');
   }
-  delete all[req.params.id];
-  return res.status(400).send(JSON.stringify(AppError.error204('Pokemon ' + req.params.id + ' was deleted!')) + '\r\n');
+  delete all[req.params.name];
+  return res.status(400).send(JSON.stringify(AppError.error204('Pokemon ' + req.params.name + ' was deleted!')) + '\r\n');
 });
